@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import React, {useState, useEffect} from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from "styled-components"
@@ -10,7 +11,7 @@ import { setAvatarRoute } from '../utils/APIRoutes'
 
 const SetAvatar = () => {
 
-    // const api = "https://api.multiavatar.com/45258989";
+    const api = "https://api.multiavatar.com/45258989";
     // const api = "https://api.multiavatar.com/Starcrasher.png?apikey=45286789";
     // const api = `https://api.multiavatar.com/7845646`;    
     const navigate = useNavigate();
@@ -45,16 +46,22 @@ const SetAvatar = () => {
         }
     };
 
-    useEffect(async ()=>{
-        const data = [];
-        for(let i = 0; i < 4; i++){
-            const image = await axios.get(`${api}/${Math.round(Math.random()*1000)}`);
-
-            const buffer = new Buffer(image.data);
-            data.push(buffer.toString("base64"));
-        }
-        setAvatars(data);
-        setIsLoading(false);
+    useEffect(() => {
+        const fetchAvatars = async () => {
+            const data = [];
+            for (let i = 0; i < 4; i++) {
+                try {
+                    const response = await axios.get(`${api}/${Math.round(Math.random() * 1000)}`);
+                    const buffer = Buffer.from(response.data);
+                    data.push(buffer.toString("base64"));
+                } catch (error) {
+                    toast.error("Error fetching avatars", toastOptions);
+                }
+            }
+            setAvatars(data);
+            setIsLoading(false);
+        };
+        fetchAvatars();
     }, []);
 
 
