@@ -4,40 +4,71 @@ import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { allUserRoute } from '../utils/APIRoutes'
 import Contact from '../components/Contact'
+import Welcome from '../components/Welcome'
+import ChatContainer from '../components/ChatContainer'
 
 const Chat = () => {
   
   const navigate = useNavigate();
   const [contacts, setContacts] = useState([]);
   const [currentUser, setCurrentUser] = useState(undefined);
+  const [currentChat, setCurrentChat] = useState(undefined);
+  const [isLoaded, setIsLoaded] = useState(undefined);
 
-  useEffect(async() => {
-    if(localStorage.getItem("chat-app-user")){
+  // useEffect(async() => {
+  //   if(!localStorage.getItem("chat-app-user")){
+  //       navigate("/login");
+  //   }
+  //   else{
+  //     setCurrentUser(await JSON.parse(localStorage.getItem("chat-app-user")))
+  //   }
+  // }, []);
+
+  useEffect(() => {
+    const checkUser = async () => {
+      if (!localStorage.getItem("chat-app-user")) {
         navigate("/login");
-    }
-    else{
-      setCurrentUser(await JSON.parse(localStorage.getItem("chat-app-user")))
-    }
-  }, []);
+      } else {
+        setCurrentUser(await JSON.parse(localStorage.getItem("chat-app-user")));
+      }
+    };
+    checkUser();
+  }, [navigate]);
 
-  useEffect(async()=>{
-    if(currentUser){
-      if(currentUser.isAvatarImageSet){
-        const data = await axios.get(`${allUserRoute}/${currentUser._id}`);
-        setContacts(data.data);
+  useEffect(() => {
+    const checkCurrentUser = async () => {
+      if (currentUser) {
+        if (currentUser.isAvatarImageSet) {
+          const { data } = await axios.get(`${allUserRoute}/${currentUser._id}`);
+          setContacts(data);
+        } else {
+          navigate("/setAvatar");
+        }
       }
-      else{
-        navigate("/setAvatar");
-      }
-    }
+    };
+    checkCurrentUser();
   }, [currentUser]);
 
+  const handleChatChange = (chat) => {
+    setCurrentChat(chat);
+  }
+
   return (
-    <Container>
-      <div className="container">
-        <Contact contacts={contacts} currentUser = {currentUser}/>
-      </div>
-    </Container>
+    <>
+      <Container>
+        <div className="container">
+          <Contact contacts={contacts} currentUser = {currentUser} changeChat={handleChatChange}/>
+          {
+            isLoaded && currentChat === undefined ? (
+              <Welcome currentUser = {currentUser}/>
+            ) : (
+              <ChatContainer currentUser={currentUser}/>
+            )
+          }
+          
+        </div>
+      </Container>
+    </>
   )
 }
 
@@ -60,6 +91,6 @@ const Container = styled.div`
         grid-template-columns: 35% 65%;
       }
     }
-    `
+    `;
 
 export default Chat

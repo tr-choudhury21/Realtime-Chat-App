@@ -27,11 +27,22 @@ const SetAvatar = () => {
         theme: "dark",
     };
 
-    useEffect(async ()=>{
-        if(!localStorage.getItem("chat-app-user")){
-            navigate("/login");
-        }
-    }, [])
+    // useEffect(async ()=>{
+    //     if(!localStorage.getItem("chat-app-user")){
+    //         navigate("/login");
+    //     }
+    // }, [])
+
+        useEffect(() => {
+            const checkUser = async () => {
+            if (!localStorage.getItem("chat-app-user")) {
+                navigate("/login");
+            } else {
+                setCurrentUser(JSON.parse(localStorage.getItem("chat-app-user")));
+            }
+            };
+            checkUser();
+        }, []);
 
     const setProfilePicture = async ()=> {
         if(selectedAvatar === undefined) {

@@ -13,21 +13,37 @@ const Login = () => {
 
     const [values, setValues] = useState({
         username: "",
-        email: "",
-        password: "",
-        confirmPassword: "",
+        password: ""
     });
 
     useEffect(() => {
-        if(localStorage.getItem("chat-app-user")){
-            navigate("/");
+        const checkUser = async () => {
+            if (!localStorage.getItem("chat-app-user")) {
+                navigate("/login");
+            } else {
+                setCurrentUser(JSON.parse(localStorage.getItem("chat-app-user")));
+            }
+            };
+            checkUser();
+        }, [navigate]);
+
+    const validateForm = ()=>{
+        const{ username, password } = values;
+        if(password === ""){
+            toast.error("Inavlid Password", toastOptions);
+            return false;
+        } 
+        else if(username === ""){
+            toast.error("Email and password is required", toastOptions);
+            return false;
         }
-    }, []);
+        return true;
+    };
 
     const handleSubmit = async (event) =>{
         event.preventDefault();
-        if(handleValidation()){
-            const{ password, username } = values;
+        if(validateForm()){
+            const{ username, password } = values;
             const { data } = await axios.post(loginRoute, {
                 username,
                 password,
@@ -50,19 +66,6 @@ const Login = () => {
         draggable: true,
         theme: "dark",
     }
-
-    const handleValidation = ()=>{
-        const{ password, username } = values;
-        if(password === ""){
-            toast.error("Inavlid Password", toastOptions);
-            return false;
-        } 
-        else if(username.length === ""){
-            toast.error("Email and password is required", toastOptions);
-            return false;
-        }
-        return true;
-    };
 
     const handleChange = (event) =>{
         setValues({...values, [event.target.name]: event.target.value });
@@ -95,7 +98,7 @@ const Login = () => {
             </FormContainer>
             <ToastContainer/>
         </>
-    )
+    );
 }
 
 const FormContainer = styled.div`
@@ -120,7 +123,6 @@ const FormContainer = styled.div`
             text-transform: uppercase;
         }
     }
-
     form {
         display: flex;
         flex-direction: column;
