@@ -1,15 +1,16 @@
-import React, { useState } from 'react'
-import Picker from "emoji-picker-react"
-import { IoMdSend } from 'react-icons/io'
-import { BsEmojiSmileFill } from 'react-icons/bs'
-import styled from 'styled-components'
+import React, { useState } from "react";
+import { BsEmojiSmileFill } from "react-icons/bs";
+import { IoMdSend } from "react-icons/io";
+import styled from "styled-components";
+import Picker from "emoji-picker-react";
+
 
 const ChatInput = ({ handleSendMsg }) => {
 
     const [showEmojiPicker , setShowEmojiPicker] = useState(false);
     const [msg, setMsg] = useState("");
 
-    const handleEmojiPickerHideShow = () => {
+    const handleEmojiPickerhideShow = () => {
         setShowEmojiPicker(!showEmojiPicker);
     }
 
@@ -31,7 +32,7 @@ const ChatInput = ({ handleSendMsg }) => {
         <Container>
             <div className="button-container">
                 <div className="emoji">
-                    <BsEmojiSmileFill onClick={handleEmojiPickerHideShow}/>
+                    <BsEmojiSmileFill onClick={handleEmojiPickerhideShow}/>
                     {showEmojiPicker && <Picker onEmojiClick={handleEmojiClick}/>}
                 </div>
             </div>
