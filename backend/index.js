@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const UserRoutes = require("./routes/userRoutes");
+const MessageRoutes = require("./routes/messageRoutes");
 
 const app = express();
 
@@ -11,6 +12,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api/auth", UserRoutes);
+app.use("/api/messages", MessageRoutes);
 
 const PORT = process.env.PORT || 5000;
 const MONGO_URL = process.env.MONGO_URL;
