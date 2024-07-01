@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import Logo from '../assets/Logo5.jpg'
 
 
-const Contact = ({contacts = [], changeChat}) => {
+const Contact = ({contacts, changeChat}) => {
 
     const [currentUserName, setCurrentUserName] = useState(undefined);
     const [currentUserImage, setCurrentUserImage] = useState(undefined);
