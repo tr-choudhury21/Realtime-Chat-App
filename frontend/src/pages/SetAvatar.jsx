@@ -11,8 +11,8 @@ import { setAvatarRoute } from '../utils/APIRoutes'
 
 const SetAvatar = () => {
 
-    const api = "https://api.multiavatar.com/45258989";
-    // const api = "https://api.multiavatar.com/Starcrasher.png?apikey=45286789";
+    const api = `https://api.multiavatar.com/45258989`;
+    // const api = "https://api.multiavatar.com/Starcrasher.png?apikey=45286789`;
     // const api = `https://api.multiavatar.com/7845646`;    
     const navigate = useNavigate();
     const [avatars, setAvatars] = useState([]);
