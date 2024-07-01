@@ -9,4 +9,4 @@ export const allUserRoute = `${host}/api/auth/allUsers`;
 
 //Messsaging Routes
 export const sendMessageRoute = `${host}/api/messages/addmsg`;
-export const recieveMessageRoute = `${host}/api/messages/getmsg`;
+export const receiveMessageRoute = `${host}/api/messages/getmsg`;

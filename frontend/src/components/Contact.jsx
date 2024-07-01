@@ -3,24 +3,24 @@ import styled from 'styled-components'
 import Logo from '../assets/Logo5.jpg'
 
 
-
-
-const Contact = ({contacts, currentUser , changeChat}) => {
+const Contact = ({contacts = [], changeChat}) => {
 
     const [currentUserName, setCurrentUserName] = useState(undefined);
     const [currentUserImage, setCurrentUserImage] = useState(undefined);
     const [currentSelected, setCurrentSelected] = useState(undefined);
-    const [currentChat, setCurrentChat] = useState(undefined);
     
     useEffect(()=>{
         const checkUser = async()=>{
-            if(currentUser){
-                setCurrentUserImage(currentUser.avatarImage);
-                setCurrentUserName(currentUser.username);
-            }
+
+            const data = await JSON.parse(
+                localStorage.getItem("chat-app-user")
+            );
+            setCurrentUserImage(data.avatarImage);
+            setCurrentUserName(data.username);
+
         }
         checkUser();
-    },[currentUser]);
+    },[]);
 
     const changeCurrentChat = (index, contact) => {
         setCurrentSelected(index);
@@ -30,7 +30,7 @@ const Contact = ({contacts, currentUser , changeChat}) => {
     return (
         <>
         {
-            currentUser && currentUserImage && (
+            currentUserImage && (
                 <Container>
                     <div className="brand">
                         <img src={Logo} alt="logo" />
@@ -97,7 +97,7 @@ const Container = styled.div`
         gap: 0.8rem;
         &::-webkit-scrollbar {
         width: 0.2rem;
-        &-thumb {
+        &::-webkit-scrollbar-thumb {
             background-color: #ffffff39;
             width: 0.1rem;
             border-radius: 1rem;
